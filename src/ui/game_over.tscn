@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgvu8ncufhf2t"]
+
+[ext_resource type="Script" path="res://src/ui/game_over.gd" id="1_esm18"]
+
+[node name="GameOver" type="CanvasLayer"]
+script = ExtResource("1_esm18")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 2.0
+offset_bottom = 2.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.588235)
+
+[node name="Label" type="Label" parent="ColorRect"]
+layout_mode = 0
+offset_left = 465.0
+offset_top = 112.0
+offset_right = 724.0
+offset_bottom = 260.0
+text = "Game Over"
+
+[node name="Button" type="Button" parent="ColorRect"]
+layout_mode = 0
+offset_left = 411.0
+offset_top = 411.0
+offset_right = 633.0
+offset_bottom = 520.0
+text = "Retry"
+
+[connection signal="pressed" from="ColorRect/Button" to="." method="_on_button_pressed"]

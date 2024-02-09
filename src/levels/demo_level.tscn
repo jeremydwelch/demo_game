@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://qj8v8xtttrju"]
+
+[ext_resource type="Script" path="res://src/levels/demo_level.gd" id="1_1d8og"]
+[ext_resource type="PackedScene" uid="uid://bfm4kwxvp4eda" path="res://src/actors/main_player.tscn" id="1_g88jl"]
+[ext_resource type="PackedScene" uid="uid://5to6ebvnrlay" path="res://src/actors/slime_mob.tscn" id="2_5frxf"]
+
+[sub_resource type="Curve2D" id="Curve2D_wfdqd"]
+bake_interval = 0.01
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 178, 144, 0, 0, 0, 0, 865, 143, 0, 0, 0, 0, 864, 494, 0, 0, 0, 0, 178, 494, 0, 0, 0, 0, 178, 144)
+}
+point_count = 5
+
+[node name="demo_level" type="Node2D"]
+script = ExtResource("1_1d8og")
+
+[node name="main_player" parent="." instance=ExtResource("1_g88jl")]
+position = Vector2(554, 312)
+
+[node name="slime_mob" parent="." instance=ExtResource("2_5frxf")]
+position = Vector2(376, 421)
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_wfdqd")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+unique_name_in_owner = true
+position = Vector2(178, 144)
+rotation = -0.0014556
+
+[node name="mob_spawn" type="Timer" parent="."]
+autostart = true
+
+[connection signal="player_death" from="main_player" to="." method="_on_main_player_player_death"]
+[connection signal="timeout" from="mob_spawn" to="." method="spawn_mob"]
