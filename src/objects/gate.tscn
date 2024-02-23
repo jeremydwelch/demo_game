@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://bg3eb2mkpxm2u"]
+
+[ext_resource type="Texture2D" uid="uid://etv4mpnbs6xd" path="res://assets/objects/gate/gate.png" id="1_cjcpm"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_nwxo7"]
+radius = 152.191
+
+[node name="gate" type="Area2D"]
+scale = Vector2(0.25, 0.25)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_cjcpm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_nwxo7")

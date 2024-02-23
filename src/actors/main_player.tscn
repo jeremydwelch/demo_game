@@ -1457,12 +1457,12 @@ graph_offset = Vector2(34.1226, -83)
 size = Vector2(25.3145, 19.9992)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_72g0i"]
-radius = 8.0
+radius = 7.07107
 
 [node name="main_player" type="CharacterBody2D"]
 collision_mask = 33
 script = ExtResource("1_64oux")
-health = 3
+max_health = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("1_r2tr0")
@@ -1517,9 +1517,6 @@ position = Vector2(1, 12)
 shape = SubResource("CircleShape2D_72g0i")
 debug_color = Color(1, 0.337255, 0.270588, 0.419608)
 
-[node name="KnockbackTimer" type="Timer" parent="."]
-unique_name_in_owner = true
-
 [node name="health_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true
 modulate = Color(0, 0.759174, 0, 1)
@@ -1533,6 +1530,9 @@ theme_override_colors/font_outline_color = Color(0, 1, 0, 1)
 step = 1.0
 value = 50.0
 show_percentage = false
+
+[node name="KnockbackTimer" type="Timer" parent="."]
+unique_name_in_owner = true
 
 [connection signal="body_entered" from="Sword" to="Sword" method="_on_body_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

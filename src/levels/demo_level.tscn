@@ -1,35 +1,42 @@
-[gd_scene load_steps=5 format=3 uid="uid://qj8v8xtttrju"]
+[gd_scene load_steps=7 format=3 uid="uid://dujcv0h7iq4c1"]
 
-[ext_resource type="Script" path="res://src/levels/demo_level.gd" id="1_1d8og"]
-[ext_resource type="PackedScene" uid="uid://bfm4kwxvp4eda" path="res://src/actors/main_player.tscn" id="1_g88jl"]
-[ext_resource type="PackedScene" uid="uid://5to6ebvnrlay" path="res://src/actors/slime_mob.tscn" id="2_5frxf"]
+[ext_resource type="PackedScene" uid="uid://5to6ebvnrlay" path="res://src/actors/slime_mob.tscn" id="1_g3624"]
+[ext_resource type="Script" path="res://src/levels/demo_level.gd" id="1_mm4yh"]
+[ext_resource type="PackedScene" uid="uid://bfm4kwxvp4eda" path="res://src/actors/main_player.tscn" id="2_1v5id"]
+[ext_resource type="PackedScene" uid="uid://bg3eb2mkpxm2u" path="res://src/objects/gate.tscn" id="4_f44ql"]
+[ext_resource type="PackedScene" uid="uid://bxfrmsprau33s" path="res://src/ui/hud.tscn" id="5_cvgho"]
 
-[sub_resource type="Curve2D" id="Curve2D_wfdqd"]
-bake_interval = 0.01
+[sub_resource type="Curve2D" id="Curve2D_nu4rh"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 178, 144, 0, 0, 0, 0, 865, 143, 0, 0, 0, 0, 864, 494, 0, 0, 0, 0, 178, 494, 0, 0, 0, 0, 178, 144)
+"points": PackedVector2Array(0, 0, 0, 0, 210, 83, 0, 0, 0, 0, 897, 79, 0, 0, 0, 0, 898, 573, 0, 0, 0, 0, 214, 574, 0, 0, 0, 0, 210, 83)
 }
 point_count = 5
 
 [node name="demo_level" type="Node2D"]
-script = ExtResource("1_1d8og")
+script = ExtResource("1_mm4yh")
 
-[node name="main_player" parent="." instance=ExtResource("1_g88jl")]
-position = Vector2(554, 312)
+[node name="slime_mob" parent="." instance=ExtResource("1_g3624")]
+position = Vector2(240, 365)
 
-[node name="slime_mob" parent="." instance=ExtResource("2_5frxf")]
-position = Vector2(376, 421)
+[node name="main_player" parent="." instance=ExtResource("2_1v5id")]
+position = Vector2(542, 307)
+speed = 50.0
 
 [node name="Path2D" type="Path2D" parent="."]
-curve = SubResource("Curve2D_wfdqd")
+curve = SubResource("Curve2D_nu4rh")
 
 [node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
 unique_name_in_owner = true
-position = Vector2(178, 144)
-rotation = -0.0014556
+position = Vector2(210, 83)
+rotation = -0.00582235
 
-[node name="mob_spawn" type="Timer" parent="."]
-autostart = true
+[node name="gate" parent="." instance=ExtResource("4_f44ql")]
+position = Vector2(541, 236)
 
+[node name="HUD" parent="." instance=ExtResource("5_cvgho")]
+unique_name_in_owner = true
+
+[connection signal="enemy_death" from="slime_mob" to="." method="_on_enemy_death"]
+[connection signal="enemy_health_update" from="slime_mob" to="." method="_on_enemy_hit"]
 [connection signal="player_death" from="main_player" to="." method="_on_main_player_player_death"]
-[connection signal="timeout" from="mob_spawn" to="." method="spawn_mob"]
+[connection signal="player_health_update" from="main_player" to="." method="_on_update_player_health"]

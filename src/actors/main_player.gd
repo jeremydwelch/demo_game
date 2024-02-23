@@ -3,10 +3,12 @@ extends CharacterBody2D
 # configuration values
 @export var speed : float = 100.0
 @export var knockback_speed : float = 200.0
-@export var health : int = 5;
+@export var max_health: int = 5;
+var health : int = max_health;
 @export var damage_rate : float = 500;
 
 signal player_death
+signal player_health_update(health, max_health)
 
 # references
 @onready var animation_tree : AnimationTree = $AnimationTree
@@ -22,8 +24,9 @@ func _ready():
   animation_tree.active = true
   %health_bar.max_value = health
   %health_bar.value = health
+  player_health_update.emit(health, max_health)
 
-func _physics_process(delta):
+func _physics_process(_delta):
   get_input()
   move_and_slide()
 
@@ -45,6 +48,7 @@ func take_player_damage():
   print("Player Took Damage")
   health -= 1
   %health_bar.value = health
+  player_health_update.emit(health, max_health)
   if health < 1:
     is_alive = false
     player_death.emit() 
@@ -69,7 +73,7 @@ func update_animation():
     animation_tree["parameters/Swing/blend_position"] = direction
     animation_tree["parameters/Dead/blend_position"] = direction
 
-func _on_hurtbox_body_entered(body: Node2D) -> void:
+func _on_hurtbox_body_entered(_body: Node2D) -> void:
   if !is_alive:
     return
   take_player_damage()

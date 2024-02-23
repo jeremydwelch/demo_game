@@ -7,7 +7,7 @@
 radius = 4.12294
 height = 10.6085
 
-[node name="Tree" type="StaticBody2D"]
+[node name="tree" type="StaticBody2D"]
 position = Vector2(0, -28)
 
 [node name="GroundShadowSprite2D" type="Sprite2D" parent="."]
