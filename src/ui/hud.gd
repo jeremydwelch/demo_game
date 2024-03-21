@@ -14,7 +14,16 @@ func update_experience(value):
 
 func update_level(level):
   $NinePatchRect/Level.text = "Level: " + str(level)
+  
+func update_world(world):
+  $NinePatchRect/World.text = "World: " + str(world)
 
+func add_time(time: float):
+  var time_left = timer.get_time_left()
+  timer.stop()
+  timer.start(time_left + time)
+  print("added time: " + str(timer.get_time_left()))
+  
 func set_timer_node(t: Timer) -> void:
   timer = t
 

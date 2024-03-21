@@ -1,10 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://dujcv0h7iq4c1"]
+[gd_scene load_steps=11 format=3 uid="uid://dujcv0h7iq4c1"]
 
 [ext_resource type="PackedScene" uid="uid://5to6ebvnrlay" path="res://src/actors/slime_mob.tscn" id="1_g3624"]
 [ext_resource type="Script" path="res://src/levels/demo_level.gd" id="1_mm4yh"]
 [ext_resource type="PackedScene" uid="uid://bfm4kwxvp4eda" path="res://src/actors/main_player.tscn" id="2_1v5id"]
 [ext_resource type="PackedScene" uid="uid://bg3eb2mkpxm2u" path="res://src/objects/gate.tscn" id="4_f44ql"]
 [ext_resource type="PackedScene" uid="uid://bxfrmsprau33s" path="res://src/ui/hud.tscn" id="5_cvgho"]
+[ext_resource type="PackedScene" uid="uid://c588t5k733udm" path="res://src/objects/heart.tscn" id="6_yxthq"]
+[ext_resource type="PackedScene" uid="uid://dnnedjkyjduoh" path="res://src/ui/world_transition.tscn" id="7_polpm"]
+[ext_resource type="PackedScene" uid="uid://uu2gyvvtxhow" path="res://src/objects/crystal.tscn" id="8_xf3qy"]
+[ext_resource type="Script" path="res://src/objects/crystal.gd" id="9_2g7as"]
 
 [sub_resource type="Curve2D" id="Curve2D_nu4rh"]
 _data = {
@@ -16,10 +20,10 @@ point_count = 5
 script = ExtResource("1_mm4yh")
 
 [node name="slime_mob" parent="." instance=ExtResource("1_g3624")]
-position = Vector2(240, 365)
+position = Vector2(390, 460)
 
 [node name="main_player" parent="." instance=ExtResource("2_1v5id")]
-position = Vector2(542, 307)
+position = Vector2(542, 356)
 speed = 50.0
 
 [node name="Path2D" type="Path2D" parent="."]
@@ -35,6 +39,15 @@ position = Vector2(541, 236)
 
 [node name="HUD" parent="." instance=ExtResource("5_cvgho")]
 unique_name_in_owner = true
+
+[node name="heart" parent="." instance=ExtResource("6_yxthq")]
+position = Vector2(673, 356)
+
+[node name="WorldTransition" parent="." instance=ExtResource("7_polpm")]
+
+[node name="crystal" parent="." instance=ExtResource("8_xf3qy")]
+position = Vector2(638, 411)
+script = ExtResource("9_2g7as")
 
 [connection signal="enemy_death" from="slime_mob" to="." method="_on_enemy_death"]
 [connection signal="enemy_health_update" from="slime_mob" to="." method="_on_enemy_hit"]

@@ -9,20 +9,28 @@ script = ExtResource("1_n6gek")
 offset_right = 1152.0
 offset_bottom = 648.0
 
+[node name="World" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 986.0
+offset_top = 4.0
+offset_right = 1050.0
+offset_bottom = 27.0
+text = "World: 1"
+
 [node name="Score" type="Label" parent="NinePatchRect"]
 layout_mode = 0
 offset_left = 986.0
-offset_top = 13.0
+offset_top = 47.0
 offset_right = 1082.0
-offset_bottom = 36.0
+offset_bottom = 70.0
 text = "Score: 0"
 
 [node name="Level" type="Label" parent="NinePatchRect"]
 layout_mode = 0
 offset_left = 986.0
-offset_top = 36.0
-offset_right = 1040.0
-offset_bottom = 59.0
+offset_top = 27.0
+offset_right = 1044.0
+offset_bottom = 50.0
 scale = Vector2(1.0175, 0.890424)
 text = "Level: 1"
 horizontal_alignment = 2

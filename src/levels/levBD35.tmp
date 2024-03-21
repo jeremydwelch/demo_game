@@ -1,0 +1,66 @@
+[gd_scene load_steps=11 format=3 uid="uid://dujcv0h7iq4c1"]
+
+[ext_resource type="PackedScene" uid="uid://5to6ebvnrlay" path="res://src/actors/slime_mob.tscn" id="1_g3624"]
+[ext_resource type="Script" path="res://src/levels/level.gd" id="1_mm4yh"]
+[ext_resource type="PackedScene" uid="uid://bfm4kwxvp4eda" path="res://src/actors/player.tscn" id="2_1v5id"]
+[ext_resource type="PackedScene" uid="uid://bg3eb2mkpxm2u" path="res://src/objects/gate.tscn" id="4_f44ql"]
+[ext_resource type="PackedScene" uid="uid://bxfrmsprau33s" path="res://src/ui/hud.tscn" id="5_cvgho"]
+[ext_resource type="PackedScene" uid="uid://c588t5k733udm" path="res://src/objects/heart.tscn" id="6_yxthq"]
+[ext_resource type="PackedScene" uid="uid://dnnedjkyjduoh" path="res://src/ui/world_transition.tscn" id="7_polpm"]
+[ext_resource type="PackedScene" uid="uid://uu2gyvvtxhow" path="res://src/objects/crystal.tscn" id="8_xf3qy"]
+[ext_resource type="Script" path="res://src/objects/crystal.gd" id="9_2g7as"]
+
+[sub_resource type="Curve2D" id="Curve2D_nu4rh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 210, 83, 0, 0, 0, 0, 473.34, 78.6585, 0, 0, 0, 0, 897, 79, 0, 0, 0, 0, 898, 573, 0, 0, 0, 0, 214, 574, 0, 0, 0, 0, 210, 83)
+}
+point_count = 6
+
+[node name="level" type="Node2D"]
+script = ExtResource("1_mm4yh")
+
+[node name="main_player" parent="." groups=["player"] instance=ExtResource("2_1v5id")]
+speed = 50.0
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="main_player"]
+position = Vector2(-198, -100)
+remote_path = NodePath("../../Camera2D")
+
+[node name="Path2D" type="Path2D" parent="."]
+position = Vector2(-680.5, -339.6)
+scale = Vector2(1.25, 0.872126)
+curve = SubResource("Curve2D_nu4rh")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+unique_name_in_owner = true
+position = Vector2(210, 83)
+rotation = -0.0164846
+
+[node name="gate" parent="." instance=ExtResource("4_f44ql")]
+position = Vector2(0, -164)
+
+[node name="HUD" parent="." instance=ExtResource("5_cvgho")]
+unique_name_in_owner = true
+
+[node name="WorldTransition" parent="." instance=ExtResource("7_polpm")]
+
+[node name="slime_mob" parent="." groups=["enemies"] instance=ExtResource("1_g3624")]
+position = Vector2(-79, -61)
+
+[node name="heart" parent="." instance=ExtResource("6_yxthq")]
+position = Vector2(88, -59)
+
+[node name="crystal" parent="." instance=ExtResource("8_xf3qy")]
+position = Vector2(33, -51)
+script = ExtResource("9_2g7as")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(-198, -100)
+zoom = Vector2(3, 3)
+
+[connection signal="crystal_collected" from="main_player" to="." method="_on_crystal_collected"]
+[connection signal="player_death" from="main_player" to="." method="_on_main_player_player_death"]
+[connection signal="player_health_update" from="main_player" to="." method="_on_update_player_health"]
+[connection signal="area_entered" from="gate" to="." method="_on_entity_entered_gate"]
+[connection signal="enemy_death" from="slime_mob" to="." method="_on_enemy_death"]
+[connection signal="enemy_health_update" from="slime_mob" to="." method="_on_enemy_hit"]

@@ -1,8 +1,8 @@
-[gd_scene load_steps=57 format=3 uid="uid://bfm4kwxvp4eda"]
+[gd_scene load_steps=58 format=3 uid="uid://bfm4kwxvp4eda"]
 
-[ext_resource type="Script" path="res://src/actors/main_player.gd" id="1_64oux"]
-[ext_resource type="Texture2D" uid="uid://8nksc6non2fm" path="res://assets/characters/player.png" id="1_r2tr0"]
-[ext_resource type="Script" path="res://src/actors/sword.gd" id="3_jcmru"]
+[ext_resource type="Script" path="res://src/actors/player.gd" id="1_v3h8r"]
+[ext_resource type="Texture2D" uid="uid://8nksc6non2fm" path="res://assets/characters/player.png" id="2_1wjaf"]
+[ext_resource type="Script" path="res://src/actors/sword.gd" id="3_p3jt4"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qe3gj"]
 radius = 6.25
@@ -48,7 +48,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -124,7 +124,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -201,7 +201,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -266,7 +266,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -331,7 +331,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -408,7 +408,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -485,7 +485,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -550,7 +550,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -615,7 +615,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -680,7 +680,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -757,7 +757,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -834,7 +834,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -898,7 +898,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -974,7 +974,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1038,7 +1038,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1126,7 +1126,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1214,7 +1214,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [ExtResource("1_r2tr0")]
+"values": [ExtResource("2_1wjaf")]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1453,19 +1453,22 @@ states/Swing/position = Vector2(440.123, 216)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_5gt2v"), "Idle", "Run", SubResource("AnimationNodeStateMachineTransition_i0xeg"), "Run", "Idle", SubResource("AnimationNodeStateMachineTransition_se72i"), "Idle", "Swing", SubResource("AnimationNodeStateMachineTransition_qpie4"), "Swing", "Idle", SubResource("AnimationNodeStateMachineTransition_l73tj"), "Run", "Swing", SubResource("AnimationNodeStateMachineTransition_lcu4i"), "Swing", "Run", SubResource("AnimationNodeStateMachineTransition_4omal"), "Idle", "Dead", SubResource("AnimationNodeStateMachineTransition_p6gg8"), "Run", "Dead", SubResource("AnimationNodeStateMachineTransition_vpxo3"), "Swing", "Dead", SubResource("AnimationNodeStateMachineTransition_osym7")]
 graph_offset = Vector2(34.1226, -83)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_diign"]
+radius = 7.9671
+height = 29.0798
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xndfx"]
 size = Vector2(25.3145, 19.9992)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_72g0i"]
-radius = 7.07107
+radius = 6.0
 
 [node name="main_player" type="CharacterBody2D"]
-collision_mask = 33
-script = ExtResource("1_64oux")
-max_health = 3
+collision_mask = 32
+script = ExtResource("1_v3h8r")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_r2tr0")
+texture = ExtResource("2_1wjaf")
 flip_h = true
 hframes = 6
 vframes = 10
@@ -1497,9 +1500,17 @@ parameters/Idle/blend_position = Vector2(-0.00213581, 1.09027)
 parameters/Run/blend_position = Vector2(0, 0)
 parameters/Swing/blend_position = Vector2(0.000374079, 1.1)
 
+[node name="CollectibleBox" type="Area2D" parent="." groups=["player"]]
+collision_mask = 16
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CollectibleBox"]
+position = Vector2(-0.496622, 8.17229)
+scale = Vector2(0.862069, 0.761905)
+shape = SubResource("CapsuleShape2D_diign")
+
 [node name="Sword" type="Area2D" parent="."]
 collision_mask = 2
-script = ExtResource("3_jcmru")
+script = ExtResource("3_p3jt4")
 
 [node name="Hitbox" type="CollisionShape2D" parent="Sword"]
 position = Vector2(14, 12.4499)
@@ -1534,6 +1545,7 @@ show_percentage = false
 [node name="KnockbackTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 
+[connection signal="area_entered" from="CollectibleBox" to="." method="_on_collectible_box_entered"]
 [connection signal="body_entered" from="Sword" to="Sword" method="_on_body_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
 [connection signal="timeout" from="KnockbackTimer" to="." method="_on_knockback_timer_timeout"]
