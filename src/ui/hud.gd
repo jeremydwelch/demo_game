@@ -23,7 +23,7 @@ func add_time(time: float):
   timer.stop()
   timer.start(time_left + time)
   print("added time: " + str(timer.get_time_left()))
-  
+ 
 func set_timer_node(t: Timer) -> void:
   timer = t
 

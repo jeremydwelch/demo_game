@@ -6,10 +6,12 @@ var score: float = 0.0
 var world: int = 1
 
 # Level stats
+@export var spawn_mobs: bool = true
+@export var have_level_time: bool = true
 @export var mob_spawn_time: float = 1.0
-var mob_spawn_time_decrease: float = 0.1
-var mob_spawn_per_timeout: float = 1.0
-var mob_spawn_per_timeout_increase: float = 0.3
+@export var mob_spawn_time_decrease: float = 0.1
+@export var mob_spawn_per_timeout: float = 1.0
+@export var mob_spawn_per_timeout_increase: float = 0.3
 @export var level_time : float = 45.0
 
 # Enemy status
@@ -37,25 +39,45 @@ func start_level() -> void:
   %HUD.update_experience(player.get_exp())
   %HUD.update_level(player.get_level())
   %HUD.update_world(world)
-  create_mob_spawn_timer()
-  create_level_timer()
+  if spawn_mobs: 
+    create_mob_spawn_timer(mob_spawn_time)
+  if have_level_time:
+    create_level_timer(level_time)
   loot_table.randomize()
-#
-#func reset_level() -> void:
-  #
-    
-func create_level_timer() -> void: 
+
+func reset_level() -> void:
+  # Reset player position
+  player.global_position = Vector2(0, 0)
+  if have_level_time:
+    level_timer.stop()
+    level_timer.start(level_time)
+  for n in get_children():
+    if n.is_in_group("slime"):
+        n.queue_free()
+    if n.is_in_group("crystal"):
+      n.queue_free()
+    if n.is_in_group("heart"):
+      n.queue_free()
+   
+  if spawn_mobs:
+    mob_spawn_timer.free()
+    mob_spawn_per_timeout += mob_spawn_per_timeout_increase
+    mob_spawn_time -= mob_spawn_time_decrease
+    create_mob_spawn_timer(mob_spawn_time)
+
+   
+func create_level_timer(time: float) -> void: 
   level_timer = Timer.new()
-  level_timer.wait_time = level_time
+  level_timer.wait_time = time
   level_timer.one_shot = true
   level_timer.timeout.connect(_on_main_player_player_death)
   add_child(level_timer)
   %HUD.set_timer_node(level_timer)
   level_timer.start()
   
-func create_mob_spawn_timer() -> void:
+func create_mob_spawn_timer(spawn_time: float) -> void:
   mob_spawn_timer = Timer.new()
-  mob_spawn_timer.wait_time = mob_spawn_time
+  mob_spawn_timer.wait_time = spawn_time
   mob_spawn_timer.timeout.connect(_on_spawn_mob)
   add_child(mob_spawn_timer)
   mob_spawn_timer.start()
@@ -69,6 +91,7 @@ func _on_spawn_mob() -> void:
     add_child(new_mob)
 
 func _on_main_player_player_death() -> void:
+  Globals.score = score
   await get_tree().create_timer(game_over_time).timeout
   get_tree().change_scene_to_file(Globals.game_over_scene_path)
   
@@ -80,11 +103,15 @@ func _on_crystal_collected() -> void:
   %HUD.add_time(crystal_time_add)
   
 func _on_entity_entered_gate(body: Node2D) -> void:
-  if body.is_in_group("player"):
+  print("entity entered gate: " + body.name + " parent: " + body.get_parent().name)
+  if body.get_parent().is_in_group("player"):
     print("entity entered gate: " + body.name)
     # update to second level
     world += 1
+    score += 5
     %HUD.update_world(world)
+    %HUD.update_score(score)
+    reset_level()
 
 func _on_enemy_death(position : Vector2) -> void:
   score += 10

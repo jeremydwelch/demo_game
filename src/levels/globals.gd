@@ -12,3 +12,8 @@ static var slime_mob_scene_path: String = "res://src/actors/slime_mob.tscn"
 static var game_over_scene_path: String = "res://src/ui/game_over.tscn"
 static var heart_scene_path: String = "res://src/objects/heart.tscn"
 static var crystal_scene_path: String = "res://src/objects/crystal.tscn"
+
+
+# Global Variables Between Scenes
+static var score: int
+static var high_score: int

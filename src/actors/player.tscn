@@ -4,10 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://8nksc6non2fm" path="res://assets/characters/player.png" id="2_1wjaf"]
 [ext_resource type="Script" path="res://src/actors/sword.gd" id="3_p3jt4"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qe3gj"]
-radius = 6.25
-height = 14.0
-
 [sub_resource type="Animation" id="Animation_0126k"]
 length = 0.001
 tracks/0/type = "value"
@@ -1463,20 +1459,15 @@ size = Vector2(25.3145, 19.9992)
 [sub_resource type="CircleShape2D" id="CircleShape2D_72g0i"]
 radius = 6.0
 
-[node name="main_player" type="CharacterBody2D"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_qe3gj"]
+radius = 4.0
+height = 8.0
+
+[node name="main_player" type="CharacterBody2D" groups=["player"]]
+y_sort_enabled = true
+position = Vector2(0, -15)
 collision_mask = 32
 script = ExtResource("1_v3h8r")
-
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_1wjaf")
-flip_h = true
-hframes = 6
-vframes = 10
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 12)
-shape = SubResource("CapsuleShape2D_qe3gj")
-debug_color = Color(0, 0, 0, 0.419608)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../Sprite2D")
@@ -1500,7 +1491,7 @@ parameters/Idle/blend_position = Vector2(-0.00213581, 1.09027)
 parameters/Run/blend_position = Vector2(0, 0)
 parameters/Swing/blend_position = Vector2(0.000374079, 1.1)
 
-[node name="CollectibleBox" type="Area2D" parent="." groups=["player"]]
+[node name="CollectibleBox" type="Area2D" parent="."]
 collision_mask = 16
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CollectibleBox"]
@@ -1530,6 +1521,7 @@ debug_color = Color(1, 0.337255, 0.270588, 0.419608)
 
 [node name="health_bar" type="ProgressBar" parent="."]
 unique_name_in_owner = true
+visible = false
 modulate = Color(0, 0.759174, 0, 1)
 visibility_layer = 63
 offset_left = -11.0
@@ -1544,6 +1536,18 @@ show_percentage = false
 
 [node name="KnockbackTimer" type="Timer" parent="."]
 unique_name_in_owner = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14)
+shape = SubResource("CapsuleShape2D_qe3gj")
+debug_color = Color(0, 0, 0, 0.419608)
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+y_sort_enabled = true
+texture = ExtResource("2_1wjaf")
+flip_h = true
+hframes = 6
+vframes = 10
 
 [connection signal="area_entered" from="CollectibleBox" to="." method="_on_collectible_box_entered"]
 [connection signal="body_entered" from="Sword" to="Sword" method="_on_body_entered"]
