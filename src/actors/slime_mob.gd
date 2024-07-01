@@ -4,11 +4,11 @@ class_name Slime
 @export var speed : float = 10
 @export var speed_increase :float = 1.0
 @export var knockback_speed : float = 250
-@export var health : float = 30.0
+@export var health : float = 25.0
 @export var health_increase: float = 5.0
-@export var damage: float = 1.0
-@export var damage_increase: float = 0.5
-@export var mob_level: int = 1
+@export var damage: float = 10.0
+@export var damage_increase: float = 5.0
+@export var mob_level: int = 0
 
 @onready var player : CharacterBody2D = get_node(Globals.player_node_path)
 @onready var level : Node2D = get_node(Globals.level_node_path)
@@ -70,7 +70,9 @@ func _physics_process(delta):
 func take_damage(direction: Vector2, damage: float):
   knockback_direction = direction
   %Slime.play_hurt()
+  print("slime took damage: " + str(damage))
   health -= damage
+  print("slime has health: " + str(health))
   enemy_health_update.emit()
   is_knockback = true
   %Timer.start(0.1)

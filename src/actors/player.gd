@@ -2,14 +2,14 @@ extends CharacterBody2D
 class_name Player
   
 # configuration values
-@export var speed: float = 100.0
+@export var speed: float = 50.0
 @export var speed_modifier: int = 0
 
 @export var max_health: int = 30;
 
 @export var health_collectible_modifier: float = 1.0
 
-@export var weapon_damage: float = 10.0
+@export var weapon_damage: float = 10.1
 @export var weapon_damage_modifier: int = 0
 
 @export var knockback_speed: float = 200.0
