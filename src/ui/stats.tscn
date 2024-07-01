@@ -1,0 +1,139 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5mnhahtb7mhq"]
+
+[ext_resource type="Script" path="res://src/ui/stats.gd" id="1_grpw2"]
+
+[node name="Stats" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_grpw2")
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+scale = Vector2(28.84, 16.16)
+
+[node name="Close" type="Button" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 33.3218
+offset_top = 33.0446
+offset_right = 83.3218
+offset_bottom = 64.0446
+scale = Vector2(0.123097, 0.201999)
+text = "Close"
+
+[node name="Confirm" type="Button" parent="NinePatchRect"]
+visible = false
+offset_left = 0.381415
+offset_top = 33.5396
+offset_right = 71.3814
+offset_bottom = 64.5396
+scale = Vector2(0.123097, 0.201999)
+text = "Confirm"
+
+[node name="hp-up" type="Button" parent="NinePatchRect"]
+offset_left = 6.27601
+offset_top = 13.1188
+offset_right = 30.276
+offset_bottom = 44.1188
+scale = Vector2(0.123097, 0.138806)
+text = "+"
+
+[node name="damage-up" type="Button" parent="NinePatchRect"]
+offset_left = 5.99862
+offset_top = 18.8738
+offset_right = 29.9986
+offset_bottom = 49.8738
+scale = Vector2(0.123097, 0.138806)
+text = "+"
+
+[node name="speed-up" type="Button" parent="NinePatchRect"]
+offset_left = 5.75589
+offset_top = 24.0099
+offset_right = 29.7559
+offset_bottom = 55.0099
+scale = Vector2(0.123097, 0.138806)
+text = "+"
+
+[node name="toughness-up" type="Button" parent="NinePatchRect"]
+offset_left = 5.54785
+offset_top = 30.198
+offset_right = 29.5479
+offset_bottom = 61.198
+scale = Vector2(0.123097, 0.138806)
+text = "+"
+
+[node name="HP" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 9.04993
+offset_top = 11.5099
+offset_right = 138.05
+offset_bottom = 34.5099
+scale = Vector2(0.118052, 0.253788)
+text = "Max Health : 100"
+
+[node name="Damage" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 8.5645
+offset_top = 17.5124
+offset_right = 90.5645
+offset_bottom = 40.5124
+scale = Vector2(0.114339, 0.244952)
+text = "Damage: 1"
+
+[node name="Speed" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 8.66852
+offset_top = 22.8342
+offset_right = 92.6685
+offset_bottom = 45.8342
+scale = Vector2(0.122074, 0.269454)
+text = "Speed: 1
+"
+
+[node name="Toughness" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 9.08461
+offset_top = 29.0842
+offset_right = 110.085
+offset_bottom = 52.0842
+scale = Vector2(0.117601, 0.270651)
+text = "Toughness: 1
+"
+
+[node name="Q" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 29.577
+offset_top = 5.56931
+offset_right = 69.577
+offset_bottom = 28.5693
+scale = Vector2(0.233177, 0.438664)
+text = "Q"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="E" type="Label" parent="NinePatchRect"]
+layout_mode = 0
+offset_left = 30.9986
+offset_top = 16.0891
+offset_right = 72.9986
+offset_bottom = 39.0891
+scale = Vector2(0.175865, 0.420097)
+text = "E"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="R" type="Label" parent="NinePatchRect"]
+offset_left = 29.8197
+offset_top = 22.6485
+offset_right = 69.8197
+offset_bottom = 45.6485
+scale = Vector2(0.254776, 0.464319)
+text = "R"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="NinePatchRect/Close" to="." method="_button_pressed"]
+[connection signal="pressed" from="NinePatchRect/Confirm" to="." method="_confirm_pressed"]
+[connection signal="pressed" from="NinePatchRect/hp-up" to="." method="_hp_up"]
+[connection signal="pressed" from="NinePatchRect/damage-up" to="." method="_damage_up"]
+[connection signal="pressed" from="NinePatchRect/speed-up" to="." method="_speed_up"]
+[connection signal="pressed" from="NinePatchRect/toughness-up" to="." method="_toughness_up"]

@@ -9,15 +9,14 @@ var score: float = 0.0
 @export var mob_spawn_time: float = 1.0
 @export var mob_spawn_time_decrease: float = 0.1
 @export var mob_spawn_per_timeout: float = 1.0
-@export var mob_spawn_per_timeout_increase: float = 0.3
+@export var mob_spawn_per_timeout_increase: float = 0.5
 @export var level_time : float = 30.0
 @export var world_level: int = 1
 
 # Enemy status
-var slime_kill_exp: int = 1
-var crystal_collect_exp: int = 5
+@export var slime_kill_exp: int = 1
+@export var crystal_collect_exp: int = 100
 
-@export var crystal_xp_add : float = 1.0
 
 @onready var player: Player = get_node(Globals.player_node_path)
 var loot_table: LootTable
@@ -25,16 +24,18 @@ var loot_table: LootTable
 var mob_spawn_timer : Timer
 var level_timer : Timer
 
-var SLIME_MOB = load(Globals.slime_mob_scene_path)
+var SLIME_MOB: PackedScene = load(Globals.slime_mob_scene_path)
 
 func _ready() -> void:
+  new_player_stats(player.get_max_health(), 0, 0, 0)
+  process_mode = Node.PROCESS_MODE_PAUSABLE
   loot_table = LootTable.new()
   add_child(loot_table)
   start_level()
   
 func start() -> void:
   start_level()
-
+  
 func start_level() -> void:
   %HUD.update_score(score)
   %HUD.update_experience(player.get_exp())
@@ -82,12 +83,13 @@ func create_mob_spawn_timer(spawn_time: float) -> void:
 
 func _on_spawn_mob() -> void:
   var mobs_to_spawn: int = int(mob_spawn_per_timeout)
-  
+    
   for n in mobs_to_spawn:
     # TODO choose mob type
-    var new_mob = SLIME_MOB.instantiate()
+    var new_mob: Slime = SLIME_MOB.instantiate()
     %PathFollow2D.progress_ratio = randf()
     new_mob.global_position = %PathFollow2D.global_position
+    new_mob.set_level(world_level)
     add_child(new_mob)
 
 func _on_world_level_increase() -> void:
@@ -95,6 +97,10 @@ func _on_world_level_increase() -> void:
   world_level += 1
   %HUD.update_world(world_level)
   create_level_timer(level_time)
+      
+  mob_spawn_per_timeout += mob_spawn_per_timeout_increase
+  mob_spawn_time -= mob_spawn_time_decrease
+  
 
 func _on_main_player_player_death() -> void:
   Globals.score = score
@@ -138,3 +144,17 @@ func update_experience(exp: int):
 func _on_music_finished() -> void:
   print("restarting music")
   $Music.play()
+
+func player_level_up() -> void:
+  $Stats.set_stat_points_to_spend(1)
+  $Stats.pause()
+  
+func toggle_paused() -> void:
+  print("toggled pause")
+
+func new_player_stats(health :int, damage :int, speed :int, toughness :int) -> void:
+  player.set_max_health(health)
+  player.set_damage_modifier(damage)
+  player.set_speed_modifier(speed)
+  player.set_toughness_modifier(toughness)
+  

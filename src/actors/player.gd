@@ -3,34 +3,32 @@ class_name Player
   
 # configuration values
 @export var speed: float = 100.0
-@export var speed_modifier: float = 1.0
+@export var speed_modifier: int = 0
 
-@export var max_health: float = 3.0;
-@export var max_health_modifier: float = 1.0
+@export var max_health: int = 30;
 
 @export var health_collectible_modifier: float = 1.0
 
-@export var weapon_damage: float = 1.0
-@export var weapon_damage_modifier: float = 1.0
+@export var weapon_damage: float = 10.0
+@export var weapon_damage_modifier: int = 0
 
 @export var knockback_speed: float = 200.0
 @export var knockback_speed_modifier: float = 1.0
 
-@export var armor: float = 0.0
+@export var toughness: int = 0
 
 var current_level: int
 var current_health: float
 var current_experience: int
 
 # Player level increases
-@export var damage_increase: float = 0.5
-@export var health_increase: float = 0.5
 @export var exp_to_next_level: int = 100
-@export var exp_increase_per_level: int = 10
+@export var exp_increase_per_level: int = 0
 
 signal player_death
 signal player_health_update(current_health, max_health)
 signal crystal_collected
+signal player_level_up
 
 # references
 @onready var animation_tree : AnimationTree = $AnimationTree
@@ -56,23 +54,26 @@ func _physics_process(_delta):
 func _process(_delta):
   update_animation()
 
-func get_max_health() -> float:
+func get_max_health() -> int:
  return max_health
      
-func set_max_health(max: float) -> void:
+func set_max_health(max: int) -> void:
   max_health = max
 
 func get_damage() -> float:
-  return weapon_damage
+  return (weapon_damage + weapon_damage_modifier)
     
-func set_damage(d: float) -> void:
-  weapon_damage = d
+func set_damage_modifier(d: int) -> void:
+  weapon_damage_modifier = d
   
 func get_speed() -> float:
-  return speed
+  return speed + speed_modifier
   
-func set_speed(s: float) -> void:
-  speed = s
+func set_speed_modifier(s: int) -> void:
+  speed_modifier = s
+  
+func set_toughness_modifier(t: int) -> void:
+  toughness = t
 
 func get_level() -> int:
   return current_level
@@ -93,14 +94,11 @@ func add_experience(xp: float) -> void:
     
 func level_up() -> void:
   # Set new player stats
-  var new_damage = get_damage() + damage_increase
-  var new_max_health = get_max_health() + health_increase
   var new_level = get_level() + 1
   exp_to_next_level += exp_increase_per_level
-  set_damage(new_damage)
-  set_max_health(new_max_health)
   set_level(new_level)
   set_exp(0)
+  player_level_up.emit()
 
 func get_input():
   # Get the input direction and handle the movement/deceleration.
@@ -109,21 +107,21 @@ func get_input():
   if is_knockback:
     velocity = knockback_direction * knockback_speed * knockback_speed_modifier
   elif is_alive:
-    velocity = direction * speed * speed_modifier
+    velocity = direction * (get_speed())
   else:
     velocity = Vector2.ZERO
 
 func take_player_damage(damage: float):
   print("Player Took Damage")
   
-  var armor_reduction = 1.0 - armor
-  if armor_reduction < 0.1:
-    armor_reduction = 0.1
+  var armor_reduction = 100 - toughness
+  if armor_reduction < 10:
+    armor_reduction = 10
   # Armor reduces damage by a percentage
   # but can never reduce damage to less than 10%
-  current_health -= (damage * armor_reduction)
+  current_health -= (damage * (armor_reduction / 100))
   %health_bar.value = current_health
-  player_health_update.emit(current_health, max_health)
+  player_health_update.emit(current_health, get_max_health())
   if current_health < 0.01:
     is_alive = false
     player_death.emit() 
@@ -160,9 +158,9 @@ func _on_collectible_box_entered(body: Node2D) -> void:
   print("Player Collectible Box entered " + body.get_parent().name)
  
   if body.get_parent().is_in_group("heart"):
-    if current_health < max_health:
-      current_health += (1.0 * health_collectible_modifier)
-      player_health_update.emit(current_health, max_health)
+    if current_health < get_max_health():
+      current_health += (10.0 * health_collectible_modifier)
+      player_health_update.emit(current_health, get_max_health())
   elif body.get_parent().is_in_group("crystal"):
     crystal_collected.emit()
 

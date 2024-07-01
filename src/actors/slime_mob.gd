@@ -1,9 +1,14 @@
 extends CharacterBody2D
+class_name Slime
 
 @export var speed : float = 10
+@export var speed_increase :float = 1.0
 @export var knockback_speed : float = 250
-@export var health : float = 3.0
+@export var health : float = 30.0
+@export var health_increase: float = 5.0
 @export var damage: float = 1.0
+@export var damage_increase: float = 0.5
+@export var mob_level: int = 1
 
 @onready var player : CharacterBody2D = get_node(Globals.player_node_path)
 @onready var level : Node2D = get_node(Globals.level_node_path)
@@ -22,6 +27,13 @@ func _ready():
   enemy_health_update.connect(level._on_enemy_hit)
   enemy_death.connect(level._on_enemy_death)
   add_to_group("slime")
+  
+func set_level(l: int) -> void:
+  mob_level = l
+  set_damage(get_damage() + (mob_level * damage_increase))
+  set_speed(get_speed() + (mob_level * speed_increase))
+  set_health(get_health() + (mob_level * health_increase))
+  
 
 func get_damage() -> float:
   return damage
