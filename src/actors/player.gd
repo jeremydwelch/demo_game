@@ -3,9 +3,21 @@ class_name Player
   
 # configuration values
 @export var speed: float = 100.0
+@export var speed_modifier: float = 1.0
+
 @export var max_health: float = 3.0;
+@export var max_health_modifier: float = 1.0
+
+@export var health_collectible_modifier: float = 1.0
+
 @export var weapon_damage: float = 1.0
+@export var weapon_damage_modifier: float = 1.0
+
 @export var knockback_speed: float = 200.0
+@export var knockback_speed_modifier: float = 1.0
+
+@export var armor: float = 0.0
+
 var current_level: int
 var current_health: float
 var current_experience: int
@@ -95,15 +107,21 @@ func get_input():
   # As good practice, you should replace UI actions with custom gameplay actions.
   direction = Input.get_vector("left", "right", "up", "down").normalized()
   if is_knockback:
-    velocity = knockback_direction * knockback_speed
+    velocity = knockback_direction * knockback_speed * knockback_speed_modifier
   elif is_alive:
-    velocity = direction * speed
+    velocity = direction * speed * speed_modifier
   else:
     velocity = Vector2.ZERO
 
 func take_player_damage(damage: float):
   print("Player Took Damage")
-  current_health -= damage
+  
+  var armor_reduction = 1.0 - armor
+  if armor_reduction < 0.1:
+    armor_reduction = 0.1
+  # Armor reduces damage by a percentage
+  # but can never reduce damage to less than 10%
+  current_health -= (damage * armor_reduction)
   %health_bar.value = current_health
   player_health_update.emit(current_health, max_health)
   if current_health < 0.01:
@@ -143,7 +161,7 @@ func _on_collectible_box_entered(body: Node2D) -> void:
  
   if body.get_parent().is_in_group("heart"):
     if current_health < max_health:
-      current_health += 1.0
+      current_health += (1.0 * health_collectible_modifier)
       player_health_update.emit(current_health, max_health)
   elif body.get_parent().is_in_group("crystal"):
     crystal_collected.emit()

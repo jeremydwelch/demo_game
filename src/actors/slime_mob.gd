@@ -29,6 +29,24 @@ func get_damage() -> float:
 func set_damage(d: float) -> void:
   damage = d
 
+func set_speed(s: float) -> void:
+  speed = s
+
+func get_speed() -> float:
+  return speed  
+
+func set_health(h: float) -> void:
+  health = h
+  
+func get_health() -> float:
+  return health
+
+func get_knockback_speed() -> float:
+  return knockback_speed
+  
+func set_knockback_speed(k: float) -> void:
+  knockback_speed = k
+
 func _physics_process(delta):
   if !is_knockback:
     var direction = global_position.direction_to(player.global_position).normalized()

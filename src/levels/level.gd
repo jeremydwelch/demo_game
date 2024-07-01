@@ -3,21 +3,22 @@ class_name Level
 
 var game_over_time: float = 2.0
 var score: float = 0.0
-var world: int = 1
 
 # Level stats
 @export var spawn_mobs: bool = true
-@export var have_level_time: bool = true
 @export var mob_spawn_time: float = 1.0
 @export var mob_spawn_time_decrease: float = 0.1
 @export var mob_spawn_per_timeout: float = 1.0
 @export var mob_spawn_per_timeout_increase: float = 0.3
-@export var level_time : float = 45.0
+@export var level_time : float = 30.0
+@export var world_level: int = 1
 
 # Enemy status
-var slime_kill_exp: int = 5
+var slime_kill_exp: int = 1
+var crystal_collect_exp: int = 5
 
-@export var crystal_time_add : float = 5.0
+@export var crystal_xp_add : float = 1.0
+
 @onready var player: Player = get_node(Globals.player_node_path)
 var loot_table: LootTable
 
@@ -38,19 +39,17 @@ func start_level() -> void:
   %HUD.update_score(score)
   %HUD.update_experience(player.get_exp())
   %HUD.update_level(player.get_level())
-  %HUD.update_world(world)
+  %HUD.update_world(world_level)
   if spawn_mobs: 
     create_mob_spawn_timer(mob_spawn_time)
-  if have_level_time:
-    create_level_timer(level_time)
   loot_table.randomize()
+  create_level_timer(level_time)
 
 func reset_level() -> void:
   # Reset player position
   player.global_position = Vector2(0, 0)
-  if have_level_time:
-    level_timer.stop()
-    level_timer.start(level_time)
+  level_timer.stop()
+  level_timer.start(level_time)
   for n in get_children():
     if n.is_in_group("slime"):
         n.queue_free()
@@ -70,9 +69,8 @@ func create_level_timer(time: float) -> void:
   level_timer = Timer.new()
   level_timer.wait_time = time
   level_timer.one_shot = true
-  level_timer.timeout.connect(_on_main_player_player_death)
+  level_timer.timeout.connect(_on_world_level_increase)
   add_child(level_timer)
-  %HUD.set_timer_node(level_timer)
   level_timer.start()
   
 func create_mob_spawn_timer(spawn_time: float) -> void:
@@ -84,11 +82,19 @@ func create_mob_spawn_timer(spawn_time: float) -> void:
 
 func _on_spawn_mob() -> void:
   var mobs_to_spawn: int = int(mob_spawn_per_timeout)
+  
   for n in mobs_to_spawn:
+    # TODO choose mob type
     var new_mob = SLIME_MOB.instantiate()
     %PathFollow2D.progress_ratio = randf()
     new_mob.global_position = %PathFollow2D.global_position
     add_child(new_mob)
+
+func _on_world_level_increase() -> void:
+  print("world level increased")
+  world_level += 1
+  %HUD.update_world(world_level)
+  create_level_timer(level_time)
 
 func _on_main_player_player_death() -> void:
   Globals.score = score
@@ -100,31 +106,35 @@ func _on_update_player_health(health: int, max_health: int) -> void:
   
 func _on_crystal_collected() -> void:
   print("Crystal collected")
-  %HUD.add_time(crystal_time_add)
+  update_experience(crystal_collect_exp)
   
-func _on_entity_entered_gate(body: Node2D) -> void:
-  print("entity entered gate: " + body.name + " parent: " + body.get_parent().name)
-  if body.get_parent().is_in_group("player"):
-    print("entity entered gate: " + body.name)
-    # update to second level
-    world += 1
-    score += 5
-    %HUD.update_world(world)
-    %HUD.update_score(score)
-    reset_level()
+#func _on_entity_entered_gate(body: Node2D) -> void:
+  #print("entity entered gate: " + body.name + " parent: " + body.get_parent().name)
+  #if body.get_parent().is_in_group("player"):
+    #print("entity entered gate: " + body.name)
+    ## update to second level
+    #world += 1
+    #score += 5
+    #%HUD.update_world(world)
+    #%HUD.update_score(score)
+    #reset_level()
 
 func _on_enemy_death(position : Vector2) -> void:
   score += 10
   print("Enemy position: y: " + str(position.y) + " x: " + str(position.x))
   %HUD.update_score(score)
-  update_experience()
+  update_experience(slime_kill_exp)
   loot_table.generate_loot(position)
   
 func _on_enemy_hit() -> void:
   score += 1
   %HUD.update_score(score)
 
-func update_experience():
-  player.add_experience(slime_kill_exp)
+func update_experience(exp: int):
+  player.add_experience(exp)
   %HUD.update_experience(player.get_exp())
   %HUD.update_level(player.get_level())
+
+func _on_music_finished() -> void:
+  print("restarting music")
+  $Music.play()
