@@ -6,7 +6,7 @@ class_name Slime
 @export var knockback_speed : float = 250
 @export var health : float = 25.0
 @export var health_increase: float = 5.0
-@export var damage: float = 10.0
+@export var damage: float = 5.0
 @export var damage_increase: float = 5.0
 @export var mob_level: int = 0
 

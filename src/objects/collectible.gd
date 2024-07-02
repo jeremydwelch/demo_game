@@ -7,7 +7,6 @@ class_name Collectible
 
 
 func _ready() -> void:
-  $Hurtbox.area_entered.connect(_on_hurtbox_body_entered)
   animation_player.play("idle")
   var timer = Timer.new()
   timer.one_shot = true
@@ -27,6 +26,3 @@ func _on_warning() -> void:
   
 func _on_disappear() -> void:
   queue_free()
-
-func _on_hurtbox_body_entered(body: Node2D) -> void:
-  _on_disappear()

@@ -3,8 +3,8 @@ class_name LootTable
 
 @onready var loot_table = RandomNumberGenerator.new()
 var loot_table_max : float = 1000.0
-var heart_drop_rate : float = 200.0
-var crystal_drop_rate : float = 200.0
+var heart_drop_rate : float = 100.0
+var crystal_drop_rate : float = 300.0
 
 var HEART_SCENE: PackedScene
 var CRYSTAL_SCENE: PackedScene

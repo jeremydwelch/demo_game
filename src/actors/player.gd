@@ -4,18 +4,23 @@ class_name Player
 # configuration values
 @export var speed: float = 50.0
 @export var speed_modifier: int = 0
+@export var speed_scale: float = 1.5
 
 @export var max_health: int = 30;
+@export var max_health_modifier: int = 0
+@export var max_health_scale: int = 2
 
 @export var health_collectible_modifier: float = 1.0
 
 @export var weapon_damage: float = 10.1
 @export var weapon_damage_modifier: int = 0
+@export var weapon_scale: float = 1.5
 
 @export var knockback_speed: float = 200.0
 @export var knockback_speed_modifier: float = 1.0
 
 @export var toughness: int = 0
+@export var toughness_scale: float = 1.5
 
 var current_level: int
 var current_health: float
@@ -24,6 +29,8 @@ var current_experience: int
 # Player level increases
 @export var exp_to_next_level: int = 100
 @export var exp_increase_per_level: int = 0
+
+@export var level_up_stats_gained: int = 2
 
 signal player_death
 signal player_health_update(current_health, max_health)
@@ -41,11 +48,12 @@ var is_knockback : bool = false
 var knockback_direction : Vector2
   
 func _ready():
-  current_health = max_health
+  set_current_health(get_max_health())
   animation_tree.active = true
-  %health_bar.max_value = current_health
-  %health_bar.value = current_health
-  player_health_update.emit(current_health, max_health)
+  %health_bar.max_value = get_current_health()
+  %health_bar.value = get_current_health()
+  player_health_update.emit(get_current_health(), get_max_health())
+  add_to_group("player", true)
 
 func _physics_process(_delta):
   get_input()
@@ -54,20 +62,29 @@ func _physics_process(_delta):
 func _process(_delta):
   update_animation()
 
+func get_current_health() -> int:
+  return current_health
+  
+func set_current_health(h: int) -> void:
+  current_health = h
+  
 func get_max_health() -> int:
- return max_health
+ return max_health + (max_health_modifier * max_health_scale)
      
 func set_max_health(max: int) -> void:
   max_health = max
 
+func set_max_health_modifier(max: int) -> void:
+  max_health_modifier = max
+
 func get_damage() -> float:
-  return (weapon_damage + weapon_damage_modifier)
+  return (weapon_damage + (weapon_damage_modifier * weapon_scale))
     
 func set_damage_modifier(d: int) -> void:
   weapon_damage_modifier = d
   
 func get_speed() -> float:
-  return speed + speed_modifier
+  return speed + (speed_modifier * speed_scale)
   
 func set_speed_modifier(s: int) -> void:
   speed_modifier = s
@@ -88,10 +105,14 @@ func set_exp(xp: int) -> void:
   current_experience = xp
   
 func add_experience(xp: float) -> void:
+  print("player add exp: " + str(xp))
   current_experience += xp
   if current_experience > exp_to_next_level:
     level_up()
-    
+
+func get_level_up_stat_points_gained() -> int:
+  return level_up_stats_gained
+  
 func level_up() -> void:
   # Set new player stats
   var new_level = get_level() + 1
@@ -112,17 +133,21 @@ func get_input():
     velocity = Vector2.ZERO
 
 func take_player_damage(damage: float):
-  print("Player Took Damage")
+  print("Player Took Damage: " + str(damage) + ", Current Health: " + str(get_current_health()))
   
-  var armor_reduction = 100 - toughness
+  var armor_reduction = 100 - (toughness * toughness_scale)
   if armor_reduction < 10:
     armor_reduction = 10
   # Armor reduces damage by a percentage
   # but can never reduce damage to less than 10%
-  current_health -= (damage * (armor_reduction / 100))
-  %health_bar.value = current_health
-  player_health_update.emit(current_health, get_max_health())
-  if current_health < 0.01:
+  var new_health = get_current_health() - (damage * (armor_reduction / 100))
+  
+  set_current_health(new_health)
+  
+  print("new health: " + str(get_current_health()))
+  %health_bar.value = get_current_health()
+  player_health_update.emit(get_current_health(), get_max_health())
+  if get_current_health() < 0.01:
     is_alive = false
     player_death.emit() 
 
@@ -158,11 +183,16 @@ func _on_collectible_box_entered(body: Node2D) -> void:
   print("Player Collectible Box entered " + body.get_parent().name)
  
   if body.get_parent().is_in_group("heart"):
-    if current_health < get_max_health():
-      current_health += (10.0 * health_collectible_modifier)
-      player_health_update.emit(current_health, get_max_health())
+    current_health += (10.0 * health_collectible_modifier)
+    if current_health > get_max_health():
+      current_health = get_max_health()
+    player_health_update.emit(current_health, get_max_health())
   elif body.get_parent().is_in_group("crystal"):
     crystal_collected.emit()
+  if body.get_parent().has_method("_on_disappear"):
+    body.get_parent()._on_disappear()
+  print("Player max health: " + str(get_max_health()))
+  print("Player current health: " + str(current_health))
 
 func _on_knockback_timer_timeout() -> void:
   is_knockback = false # Replace with function body.

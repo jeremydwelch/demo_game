@@ -22,6 +22,7 @@ text = "Close"
 
 [node name="Confirm" type="Button" parent="NinePatchRect"]
 visible = false
+layout_mode = 0
 offset_left = 0.381415
 offset_top = 33.5396
 offset_right = 71.3814
@@ -30,6 +31,7 @@ scale = Vector2(0.123097, 0.201999)
 text = "Confirm"
 
 [node name="hp-up" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 6.27601
 offset_top = 13.1188
 offset_right = 30.276
@@ -37,7 +39,16 @@ offset_bottom = 44.1188
 scale = Vector2(0.123097, 0.138806)
 text = "+"
 
+[node name="hp-down" type="Button" parent="NinePatchRect"]
+offset_left = 2.11512
+offset_top = 13.1807
+offset_right = 26.1151
+offset_bottom = 44.1807
+scale = Vector2(0.123097, 0.138806)
+text = "-"
+
 [node name="damage-up" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 5.99862
 offset_top = 18.8738
 offset_right = 29.9986
@@ -45,7 +56,16 @@ offset_bottom = 49.8738
 scale = Vector2(0.123097, 0.138806)
 text = "+"
 
+[node name="damage-down" type="Button" parent="NinePatchRect"]
+offset_left = 1.80305
+offset_top = 18.8738
+offset_right = 25.803
+offset_bottom = 49.8738
+scale = Vector2(0.123097, 0.138806)
+text = "-"
+
 [node name="speed-up" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 5.75589
 offset_top = 24.0099
 offset_right = 29.7559
@@ -53,13 +73,30 @@ offset_bottom = 55.0099
 scale = Vector2(0.123097, 0.138806)
 text = "+"
 
+[node name="speed-down" type="Button" parent="NinePatchRect"]
+offset_left = 2.39251
+offset_top = 24.0099
+offset_right = 26.3925
+offset_bottom = 55.0099
+scale = Vector2(0.123097, 0.138806)
+text = "-"
+
 [node name="toughness-up" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 5.54785
 offset_top = 30.198
 offset_right = 29.5479
 offset_bottom = 61.198
 scale = Vector2(0.123097, 0.138806)
 text = "+"
+
+[node name="toughness-down" type="Button" parent="NinePatchRect"]
+offset_left = 2.39251
+offset_top = 30.1361
+offset_right = 26.3926
+offset_bottom = 61.1361
+scale = Vector2(0.123097, 0.138806)
+text = "-"
 
 [node name="HP" type="Label" parent="NinePatchRect"]
 layout_mode = 0
@@ -122,6 +159,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="R" type="Label" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 29.8197
 offset_top = 22.6485
 offset_right = 69.8197
@@ -134,6 +172,10 @@ vertical_alignment = 1
 [connection signal="pressed" from="NinePatchRect/Close" to="." method="_button_pressed"]
 [connection signal="pressed" from="NinePatchRect/Confirm" to="." method="_confirm_pressed"]
 [connection signal="pressed" from="NinePatchRect/hp-up" to="." method="_hp_up"]
+[connection signal="pressed" from="NinePatchRect/hp-down" to="." method="_hp_down"]
 [connection signal="pressed" from="NinePatchRect/damage-up" to="." method="_damage_up"]
+[connection signal="pressed" from="NinePatchRect/damage-down" to="." method="_damage_down"]
 [connection signal="pressed" from="NinePatchRect/speed-up" to="." method="_speed_up"]
+[connection signal="pressed" from="NinePatchRect/speed-down" to="." method="_speed_down"]
 [connection signal="pressed" from="NinePatchRect/toughness-up" to="." method="_toughness_up"]
+[connection signal="pressed" from="NinePatchRect/toughness-down" to="." method="_toughness_down"]

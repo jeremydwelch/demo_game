@@ -1,4 +1,5 @@
 extends CanvasLayer
+class_name Stats
 
 signal toggle_pause
 signal new_stats(health, damage, speed, toughness)
@@ -7,6 +8,11 @@ var health: int = 0
 var damage: int = 0
 var speed: int = 0
 var toughness: int = 0
+
+var temp_health: int = 0
+var temp_damage: int = 0
+var temp_speed: int = 0
+var temp_toughness: int = 0
 
 var paused: bool = false
 
@@ -32,7 +38,7 @@ func _process(delta: float) -> void:
       unpause()
     else:
       pause()
-  if points_to_spend > 0:
+  if points_spent > 0 and points_to_spend == 0:
     $NinePatchRect/Confirm.show()
     $NinePatchRect/Close.hide()
   else: 
@@ -53,28 +59,63 @@ func set_toughness(t) -> void:
   toughness = t
   
 func update_max_health():
-  $NinePatchRect/HP.text = "Max Health: " + str(health)
+  var h = health
+  if temp_health > health:
+    h = temp_health
+  $NinePatchRect/HP.text = "Max Health: " + str(h)
   
 func update_damage():
-  $NinePatchRect/Damage.text = "Damage: " + str(damage)
+  var d = damage
+  if temp_damage > damage:
+    d = temp_damage
+  $NinePatchRect/Damage.text = "Damage: " + str(d)
 
 func update_speed():
-  $NinePatchRect/Speed.text = "Speed: " + str(speed)
+  var s = speed
+  if temp_speed > speed:
+    s = temp_speed
+  $NinePatchRect/Speed.text = "Speed: " + str(s)
 
 func update_toughness():
-  $NinePatchRect/Toughness.text = "Toughness: " + str(toughness)
+  var t = toughness
+  if temp_toughness > toughness:
+    t = temp_toughness
+  $NinePatchRect/Toughness.text = "Toughness: " + str(t)
 
 func update_buttons():
+  if points_to_spend == 0:
+    $"NinePatchRect/hp-up".disabled = true  
+    $"NinePatchRect/damage-up".disabled = true  
+    $"NinePatchRect/speed-up".disabled = true  
+    $"NinePatchRect/toughness-up".disabled = true
+  if points_spent == 0:
+    $"NinePatchRect/hp-down".disabled = true  
+    $"NinePatchRect/damage-down".disabled = true  
+    $"NinePatchRect/speed-down".disabled = true  
+    $"NinePatchRect/toughness-down".disabled = true
   if points_to_spend > 0:
-    $"NinePatchRect/hp-up".show()
-    $"NinePatchRect/damage-up".show()
-    $"NinePatchRect/speed-up".show()
-    $"NinePatchRect/toughness-up".show()
+    $"NinePatchRect/hp-up".disabled = false  
+    $"NinePatchRect/damage-up".disabled = false  
+    $"NinePatchRect/speed-up".disabled = false  
+    $"NinePatchRect/toughness-up".disabled = false
+  
+  if temp_health == health:
+    $"NinePatchRect/hp-down".disabled = true
   else:
-    $"NinePatchRect/hp-up".hide()
-    $"NinePatchRect/damage-up".hide()
-    $"NinePatchRect/speed-up".hide()
-    $"NinePatchRect/toughness-up".hide()
+    $"NinePatchRect/hp-down".disabled = false
+  if temp_damage == damage:
+    $"NinePatchRect/damage-down".disabled = true
+  else:
+    $"NinePatchRect/damage-down".disabled = false
+  if temp_speed == speed:
+    $"NinePatchRect/speed-down".disabled = true
+  else:
+    $"NinePatchRect/speed-down".disabled = false
+  if temp_toughness == toughness:
+    $"NinePatchRect/toughness-down".disabled = true
+  else:
+    $"NinePatchRect/toughness-down".disabled = false
+  
     
 
 func _button_pressed():
@@ -83,7 +124,11 @@ func _button_pressed():
 
 func _confirm_pressed():
   print("confirmed button pressed")
-  if points_spent > 0:
+  if points_spent > 0 and points_to_spend == 0:
+    health = temp_health
+    damage = temp_damage
+    speed = temp_speed
+    toughness = temp_toughness
     var format_string = "New Stats: HP: %d, Damage: %d, Speed: %d, Toughness: %d"
     var actual_string = format_string % [health, damage, speed, toughness]
     print(actual_string)
@@ -102,77 +147,59 @@ func unpause() -> void:
   hide()
   new_stats.emit(health, damage, speed, toughness)
   toggle_pause.emit()
+  
+func spend_point() -> void:
+  points_to_spend -= 1
+  points_spent += 1
+  
+func refund_point() -> void:
+  points_to_spend += 1
+  points_spent -= 1
 
 func _hp_up() -> void:
   print("hp up button pressed")
-  if (points_to_spend - points_spent) > 0:
-    points_spent += 1
-    $"NinePatchRect/hp-up".text = "-"
-    health += 1
-    $"NinePatchRect/damage-up".disabled = true
-    $"NinePatchRect/speed-up".disabled = true
-    $"NinePatchRect/toughness-up".disabled = true
-  else:
-    points_spent -= 1
-    $"NinePatchRect/hp-up".text = "+"
-    health -= 1
-    $"NinePatchRect/damage-up".disabled = false
-    $"NinePatchRect/speed-up".disabled = false
-    $"NinePatchRect/toughness-up".disabled = false
+  temp_health += 1
+  spend_point()
   update_max_health()
-
+  
+func _hp_down() -> void:
+  print("hp down button pressed")
+  temp_health -= 1
+  refund_point()
+  update_max_health()
+  
 func _damage_up() -> void:
   print("damage up button pressed")
-  if (points_to_spend - points_spent) > 0:
-    points_spent += 1
-    $"NinePatchRect/damage-up".text = "-"
-    damage += 1
-    $"NinePatchRect/speed-up".disabled = true
-    $"NinePatchRect/hp-up".disabled = true
-    $"NinePatchRect/toughness-up".disabled = true
-  else: 
-    points_spent -= 1
-    $"NinePatchRect/damage-up".text = "+"
-    damage -= 1 
-    $"NinePatchRect/speed-up".disabled = false
-    $"NinePatchRect/hp-up".disabled = false
-    $"NinePatchRect/toughness-up".disabled = false
+  temp_damage += 1
+  spend_point()
   update_damage()
-
+  
+func _damage_down() -> void:
+  print("damage down button pressed")
+  temp_damage -= 1
+  refund_point()
+  update_damage()
+  
 func _speed_up() -> void:
   print("speed up button pressed")
-  if (points_to_spend - points_spent) > 0:
-    points_spent += 1
-    $"NinePatchRect/speed-up".text = "-"
-    speed += 1
-    $"NinePatchRect/damage-up".disabled = true
-    $"NinePatchRect/hp-up".disabled = true
-    $"NinePatchRect/toughness-up".disabled = true
-  else:
-    points_spent -= 1
-    $"NinePatchRect/speed-up".text = "+"
-    speed -= 1
-    $"NinePatchRect/damage-up".disabled = false
-    $"NinePatchRect/hp-up".disabled = false
-    $"NinePatchRect/toughness-up".disabled = false
+  temp_speed += 1
+  spend_point()
+  update_speed()
+
+func _speed_down() -> void:
+  print("speed down button pressed")
+  temp_speed -= 1
+  refund_point()
   update_speed()
 
 func _toughness_up() -> void:
-  print("toughness button pressed")
-  if (points_to_spend - points_spent) > 0:
-    points_spent += 1
-    $"NinePatchRect/toughness-up".text = "-"
-    toughness += 1
-    
-    $"NinePatchRect/damage-up".disabled = true
-    $"NinePatchRect/speed-up".disabled = true
-    $"NinePatchRect/hp-up".disabled = true
-  else:
-    points_spent -= 1
-    $"NinePatchRect/toughness-up".text = "+"
-    toughness -= 1
-    
-    $"NinePatchRect/damage-up".disabled = false
-    $"NinePatchRect/speed-up".disabled = false
-    $"NinePatchRect/hp-up".disabled = false
+  print("toughness up button pressed")
+  temp_toughness += 1
+  spend_point()
+  update_toughness()
+
+func _toughness_down() -> void:
+  print("toughness down button pressed")
+  temp_toughness -= 1
+  refund_point()
   update_toughness()

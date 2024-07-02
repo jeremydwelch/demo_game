@@ -10,15 +10,15 @@ var score: float = 0.0
 @export var mob_spawn_time_decrease: float = 0.1
 @export var mob_spawn_per_timeout: float = 1.0
 @export var mob_spawn_per_timeout_increase: float = 0.5
-@export var level_time : float = 30.0
+@export var level_time : float = 60.0
 @export var world_level: int = 1
 
 # Enemy status
-@export var slime_kill_exp: int = 1
-@export var crystal_collect_exp: int = 100
-
+@export var slime_kill_exp: int = 5
+@export var crystal_collect_exp: int = 75
 
 @onready var player: Player = get_node(Globals.player_node_path)
+@onready var stats: Stats = get_node(Globals.stats_node_path)
 var loot_table: LootTable
 
 var mob_spawn_timer : Timer
@@ -27,7 +27,12 @@ var level_timer : Timer
 var SLIME_MOB: PackedScene = load(Globals.slime_mob_scene_path)
 
 func _ready() -> void:
-  new_player_stats(player.get_max_health(), 0, 0, 0)
+  new_player_stats(0, 0, 0, 0)
+  stats.set_health(0)
+  stats.set_damage(0)
+  stats.set_speed(0)
+  stats.set_toughness(0)
+  
   process_mode = Node.PROCESS_MODE_PAUSABLE
   loot_table = LootTable.new()
   add_child(loot_table)
@@ -108,6 +113,7 @@ func _on_main_player_player_death() -> void:
   get_tree().change_scene_to_file(Globals.game_over_scene_path)
   
 func _on_update_player_health(health: int, max_health: int) -> void:
+  print("updating health: " + str(health) + ", max health: " + str(max_health))
   %HUD.update_health(health, max_health)
   
 func _on_crystal_collected() -> void:
@@ -137,6 +143,7 @@ func _on_enemy_hit() -> void:
   %HUD.update_score(score)
 
 func update_experience(exp: int):
+  print("updating experience")
   player.add_experience(exp)
   %HUD.update_experience(player.get_exp())
   %HUD.update_level(player.get_level())
@@ -146,14 +153,14 @@ func _on_music_finished() -> void:
   $Music.play()
 
 func player_level_up() -> void:
-  $Stats.set_stat_points_to_spend(1)
+  $Stats.set_stat_points_to_spend(player.get_level_up_stat_points_gained())
   $Stats.pause()
   
 func toggle_paused() -> void:
   print("toggled pause")
 
 func new_player_stats(health :int, damage :int, speed :int, toughness :int) -> void:
-  player.set_max_health(health)
+  player.set_max_health_modifier(health)
   player.set_damage_modifier(damage)
   player.set_speed_modifier(speed)
   player.set_toughness_modifier(toughness)

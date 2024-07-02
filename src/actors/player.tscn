@@ -1537,7 +1537,7 @@ show_percentage = false
 [node name="KnockbackTimer" type="Timer" parent="."]
 unique_name_in_owner = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." groups=["player"]]
 position = Vector2(0, 14)
 shape = SubResource("CapsuleShape2D_qe3gj")
 debug_color = Color(0, 0, 0, 0.419608)
