@@ -28,7 +28,7 @@ var current_experience: int
 
 # Player level increases
 @export var exp_to_next_level: int = 100
-@export var exp_increase_per_level: int = 0
+@export var exp_increase_per_level: int = 10
 
 @export var level_up_stats_gained: int = 2
 

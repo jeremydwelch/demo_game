@@ -10,7 +10,7 @@ var score: float = 0.0
 @export var mob_spawn_time_decrease: float = 0.1
 @export var mob_spawn_per_timeout: float = 1.0
 @export var mob_spawn_per_timeout_increase: float = 0.5
-@export var level_time : float = 60.0
+@export var level_time : float = 45.0
 @export var world_level: int = 1
 
 # Enemy status

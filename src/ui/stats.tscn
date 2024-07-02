@@ -40,6 +40,7 @@ scale = Vector2(0.123097, 0.138806)
 text = "+"
 
 [node name="hp-down" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 2.11512
 offset_top = 13.1807
 offset_right = 26.1151
@@ -57,6 +58,7 @@ scale = Vector2(0.123097, 0.138806)
 text = "+"
 
 [node name="damage-down" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 1.80305
 offset_top = 18.8738
 offset_right = 25.803
@@ -74,6 +76,7 @@ scale = Vector2(0.123097, 0.138806)
 text = "+"
 
 [node name="speed-down" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 2.39251
 offset_top = 24.0099
 offset_right = 26.3925
@@ -91,6 +94,7 @@ scale = Vector2(0.123097, 0.138806)
 text = "+"
 
 [node name="toughness-down" type="Button" parent="NinePatchRect"]
+layout_mode = 0
 offset_left = 2.39251
 offset_top = 30.1361
 offset_right = 26.3926

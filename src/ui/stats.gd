@@ -125,6 +125,11 @@ func _button_pressed():
 func _confirm_pressed():
   print("confirmed button pressed")
   if points_spent > 0 and points_to_spend == 0:
+    confirm_stats()
+    unpause()
+
+func confirm_stats() -> void:
+  if points_spent > 0 and points_to_spend == 0:
     health = temp_health
     damage = temp_damage
     speed = temp_speed
@@ -134,7 +139,6 @@ func _confirm_pressed():
     print(actual_string)
     points_to_spend = 0
     points_spent = 0
-    unpause()
 
 func pause() -> void:
   paused = true
@@ -142,6 +146,9 @@ func pause() -> void:
   show()
 
 func unpause() -> void:
+  if points_to_spend > 0:
+    return
+  confirm_stats()
   paused = false
   get_tree().paused = false
   hide()
