@@ -74,7 +74,7 @@ func update_speed():
   var s = speed
   if temp_speed > speed:
     s = temp_speed
-  $NinePatchRect/Speed.text = "Speed: " + str(s)
+  $NinePatchRect/Speed.text = "Speeeeeeeeeeeeeeeeeeeeeeed: " + str(s)
 
 func update_toughness():
   var t = toughness
