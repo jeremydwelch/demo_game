@@ -15,7 +15,10 @@ var score: float = 0.0
 
 # Enemy status
 @export var slime_kill_exp: int = 5
+@export var skeleton_kill_exp: int = 5
 @export var crystal_collect_exp: int = 75
+@export var num_mobs: int = 3
+@onready var mob_table = RandomNumberGenerator.new()
 
 @onready var player: Player = get_node(Globals.player_node_path)
 @onready var stats: Stats = get_node(Globals.stats_node_path)
@@ -25,6 +28,9 @@ var mob_spawn_timer : Timer
 var level_timer : Timer
 
 var SLIME_MOB: PackedScene = load(Globals.slime_mob_scene_path)
+var SKELETON_MOB: PackedScene = load(Globals.skeleton_mob_scene_path)
+var WASP_MOB: PackedScene = load(Globals.wasp_mob_scene_path)
+var BLOB_MOB: PackedScene = load(Globals.blob_mob_scene_path)
 
 func _ready() -> void:
   new_player_stats(0, 0, 0, 0)
@@ -33,6 +39,7 @@ func _ready() -> void:
   stats.set_speed(0)
   stats.set_toughness(0)
   
+  mob_table = RandomNumberGenerator.new()
   process_mode = Node.PROCESS_MODE_PAUSABLE
   loot_table = LootTable.new()
   add_child(loot_table)
@@ -57,7 +64,7 @@ func reset_level() -> void:
   level_timer.stop()
   level_timer.start(level_time)
   for n in get_children():
-    if n.is_in_group("slime"):
+    if n.is_in_group("mob"):
         n.queue_free()
     if n.is_in_group("crystal"):
       n.queue_free()
@@ -90,8 +97,16 @@ func _on_spawn_mob() -> void:
   var mobs_to_spawn: int = int(mob_spawn_per_timeout)
     
   for n in mobs_to_spawn:
-    # TODO choose mob type
-    var new_mob: Slime = SLIME_MOB.instantiate()
+    
+    var rand : float = mob_table.randf_range(0.0,num_mobs + 1)
+    print("rand: " + str(rand))
+    var new_mob: Mob  
+    if rand < 1:
+      new_mob = BLOB_MOB.instantiate()
+    elif rand < 2:
+      new_mob = WASP_MOB.instantiate()
+    else:
+      new_mob = SKELETON_MOB.instantiate()
     %PathFollow2D.progress_ratio = randf()
     new_mob.global_position = %PathFollow2D.global_position
     new_mob.set_level(world_level)

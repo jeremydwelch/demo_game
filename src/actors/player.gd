@@ -39,12 +39,14 @@ signal player_level_up
 
 # references
 @onready var animation_tree : AnimationTree = $AnimationTree
+@onready var knockback_timer: Timer = $KnockbackTimer
 
 # class data
 var direction : Vector2 = Vector2.ZERO
 var is_alive : bool = true
-
+var is_swinging: bool = false
 var is_knockback : bool = false
+var hit: bool = false
 var knockback_direction : Vector2
   
 func _ready():
@@ -134,6 +136,14 @@ func get_input():
 
 func take_player_damage(damage: float):
   print("Player Took Damage: " + str(damage) + ", Current Health: " + str(get_current_health()))
+
+  # Player shouldn't take damage more than once per "knockback"
+  # The timer is set to the length of the animation plus a little fuzz
+  if hit:
+    return
+  hit = true
+  animation_tree["parameters/conditions/hit"] = true
+  knockback_timer.start()
   
   var armor_reduction = 100 - (toughness * toughness_scale)
   if armor_reduction < 10:
@@ -141,9 +151,7 @@ func take_player_damage(damage: float):
   # Armor reduces damage by a percentage
   # but can never reduce damage to less than 10%
   var new_health = get_current_health() - (damage * (armor_reduction / 100))
-  
   set_current_health(new_health)
-  
   print("new health: " + str(get_current_health()))
   %health_bar.value = get_current_health()
   player_health_update.emit(get_current_health(), get_max_health())
@@ -152,24 +160,36 @@ func take_player_damage(damage: float):
     player_death.emit() 
 
 func update_animation():
+  # print("direction is (" + str(direction.x) + " , " + str(direction.y) + ")")
   if !is_alive:
     animation_tree["parameters/conditions/is_dead"] = true
     return
 
   if Input.is_action_just_pressed("use"):
     animation_tree["parameters/conditions/swing"] = true
+    is_swinging = true
   else:
     animation_tree["parameters/conditions/swing"] = false
+  
+  # The player should not be able to change the swing direction in mid animaition
+  # We need to track if the player is swinging, and if they are do not update
+  # the animation tree direction so that the animation can finish
+  # once it is done we can allow updates again
+  if is_swinging:
+    return
   if (velocity == Vector2.ZERO):
     animation_tree["parameters/conditions/is_idle"] = true
     animation_tree["parameters/conditions/is_moving"] = false
   else:
     animation_tree["parameters/conditions/is_idle"] = false
     animation_tree["parameters/conditions/is_moving"] = true
-    animation_tree["parameters/Idle/blend_position"] = direction
-    animation_tree["parameters/Run/blend_position"] = direction
-    animation_tree["parameters/Swing/blend_position"] = direction
-    animation_tree["parameters/Dead/blend_position"] = direction
+    animation_tree["parameters/Idle/blend_position"] = velocity.x
+    animation_tree["parameters/Run/blend_position"] = velocity.x
+    animation_tree["parameters/Swing/blend_position"] = velocity.x
+    animation_tree["parameters/Dead/blend_position"] = velocity.x
+    animation_tree["parameters/Hit/blend_position"] = velocity.x
+
+    
 
 func _on_hurtbox_body_entered(body: Node2D) -> void:
   if !is_alive:
@@ -196,3 +216,11 @@ func _on_collectible_box_entered(body: Node2D) -> void:
 
 func _on_knockback_timer_timeout() -> void:
   is_knockback = false # Replace with function body.
+  hit = false
+  animation_tree["parameters/conditions/hit"] = false
+
+
+func _on_animation_tree_animation_finished(anim_name: StringName) -> void:
+  if anim_name == "swing_left" || anim_name == "swing_right":
+    is_swinging = false
+    print("Finished hit animaition")
