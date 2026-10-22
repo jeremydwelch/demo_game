@@ -1,31 +1,25 @@
-extends Node
 class_name LootTable
+extends Node
 
-@onready var loot_table = RandomNumberGenerator.new()
-var loot_table_max : float = 1000.0
-var heart_drop_rate : float = 100.0
-var crystal_drop_rate : float = 300.0
+const LOOT_ROLL_MAX: float = 1000.0
 
-var HEART_SCENE: PackedScene
-var CRYSTAL_SCENE: PackedScene
+var heart_drop_rate: float = 100.0
+var crystal_drop_rate: float = 300.0
 
-func _ready() -> void:
-  HEART_SCENE = load(Globals.heart_scene_path)
-  CRYSTAL_SCENE = load(Globals.crystal_scene_path)
+var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
+var _heart_scene: PackedScene = load(Globals.heart_scene_path)
+var _crystal_scene: PackedScene = load(Globals.crystal_scene_path)
 
-func randomize() -> void:
-  loot_table = RandomNumberGenerator.new()
-  
-func generate_loot(position : Vector2) -> void:
-  var rand : float = loot_table.randf_range(0.0,loot_table_max)
-  print("rand: " + str(rand))
-  if rand < heart_drop_rate:
-    print("Dropped heart")
-    var heart = HEART_SCENE.instantiate()
-    add_child(heart)
-    heart.global_position = position
-  elif rand < (crystal_drop_rate + heart_drop_rate):
-    print("Dropped crystal")
-    var crystal = CRYSTAL_SCENE.instantiate()
-    add_child(crystal)
-    crystal.global_position = position
+
+func generate_loot(drop_position: Vector2) -> void:
+	var roll: float = _rng.randf_range(0.0, LOOT_ROLL_MAX)
+	if roll < heart_drop_rate:
+		_drop(_heart_scene, drop_position)
+	elif roll < heart_drop_rate + crystal_drop_rate:
+		_drop(_crystal_scene, drop_position)
+
+
+func _drop(scene: PackedScene, drop_position: Vector2) -> void:
+	var loot: Node2D = scene.instantiate()
+	add_child(loot)
+	loot.global_position = drop_position
