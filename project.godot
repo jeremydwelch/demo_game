@@ -19,10 +19,6 @@ run/main_scene="res://src/levels/game_manager.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 config/icon="res://icon.svg"
 
-[dotnet]
-
-project/assembly_name="MyFirstGame"
-
 [editor]
 
 version_control/plugin_name="GitPlugin"
