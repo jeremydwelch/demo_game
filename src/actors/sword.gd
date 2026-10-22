@@ -1,8 +1,9 @@
 extends Area2D
 
-@onready var player : CharacterBody2D = get_node(Globals.player_node_path)
+@onready var player: Player = get_parent()
+
 
 func _on_body_entered(body: Node2D) -> void:
-  if body.has_method("take_damage"):
-    var direction: Vector2 = (body.global_position - get_parent().global_position).normalized()
-    body.take_damage(direction, player.get_damage())
+	if body.has_method("take_damage"):
+		var direction: Vector2 = player.global_position.direction_to(body.global_position)
+		body.take_damage(direction, player.get_damage())

@@ -38,7 +38,7 @@ addons/     godot-git-plugin, godot_mcp_toolkit
 ## How the game currently works
 
 - **Scene flow:** `game_manager.tscn` shows `TitleScreen` → `WorldTransition` fade → `change_scene_to_file(level.tscn)`, which makes `level` the scene root → on player death → `game_over.tscn` → back to `level.tscn`.
-- **`Globals`** (`src/levels/globals.gd`) is a static `class_name`, **not** an autoload. It holds hard-coded node paths (`/root/level/main_player`, ...) and scene paths, plus `score` / `high_score`. Those node paths only resolve because `level` is the root scene.
+- **`Globals`** (`src/levels/globals.gd`) is a static `class_name`, **not** an autoload. It holds scene paths plus `score` / `high_score`. `Level` connects to each mob's signals when it spawns the mob and sets `mob.target`. Mobs don't look up the level or player themselves.
 - **Spawning** (`level.gd`): a `Timer` spawns mobs at a random point on a `Path2D` ring parented to the player. Every `level_time` (45s) `world_level` goes up, which spawns more mobs, spawns them faster, and calls `mob.set_level(world_level)` to scale their health, damage, and speed.
 - **Combat:** the player's `Sword` `Area2D` calls `take_damage(direction, damage)` on bodies it hits. Mobs knock back, and on death they emit `enemy_death`, free themselves, and spawn smoke. The player's hurtbox calls `take_player_damage`, with knockback i-frames handled by `KnockbackTimer`. Toughness reduces damage by a percentage, with a floor of 10% damage taken.
 - **Loot** (`loot_table.gd`): a roll out of 1000 drops a heart (<100) or a crystal (<400). Collectibles blink and then despawn after their `ttl`.
@@ -50,7 +50,7 @@ addons/     godot-git-plugin, godot_mcp_toolkit
 The code is early-stage and fragile. A large cleanup is planned. When you touch code, move it toward these patterns:
 
 - **Data-driven content.** Abilities, mob types, and (later) bosses are defined by `Resource` subclasses (e.g. `AbilityData`: cooldown, per-level scaling, icon, the scene to run) plus a scene/script that executes them. Adding a fireball or a new mob should mean adding a resource and a scene, not new branches in `player.gd` or more `if rand < 1` chains in `level.gd`.
-- **Autoloads instead of hard-coded paths.** Replace `Globals` node paths and direct cross-node calls (e.g. `Mob._ready` connecting to `level._on_enemy_hit`) with autoloads. Use an `EventBus` for game-wide signals and a `GameState` for run/meta data such as score. Prefer signals ("call down, signal up") over `get_node("/root/...")`.
+- **Autoloads instead of hard-coded paths.** Replace `Globals` and direct cross-node calls with autoloads. Use an `EventBus` for game-wide signals and a `GameState` for run/meta data such as score. Prefer signals ("call down, signal up") over `get_node("/root/...")`.
 - **Separate run state from meta state** so persistence can be added cleanly.
 
 ## Code conventions
@@ -87,11 +87,9 @@ There's no automated test suite yet; formal tests will come later. Before openin
 
 There are likely more bugs than are listed here. Fix them when they're in scope, and mention them in the PR when you find them.
 
-- `Globals.slime_mob_scene_path` points to `slime_mob.tscn`, which doesn't exist, and `level.gd` loads it anyway.
-- `GameManager.change_to_level` / `change_to_game_over` / `reset_level` and `Level.reset_level` are unused. If they were ever called, `Level.start()` would also double-start timers, because `_ready` already calls `start_level()`.
-- Every mob kill grants `slime_kill_exp`. `skeleton_kill_exp` is unused, and there's no per-mob XP.
-- `Player.add_experience` throws away overflow XP and can only gain one level per call.
-- Heart pickups hard-code `10.0` and ignore `Heart.health_increase`.
-- `Mob.take_damage`'s `damage` parameter shadows the member. A mob hit again while it awaits its death timer can emit `enemy_death` more than once.
-- Health is a `float` in some places and an `int` in others (`get_current_health() -> int`).
-- Commented-out gate/world-advance code in `level.gd`. `gate.tscn` is unused.
+- `gate.tscn` is unused (the old gate/world-advance code was removed).
+- Player knockback isn't implemented: `Player.is_knockback` is never set, so `knockback_speed` does nothing.
+- All three mob scenes use the same `Mob` defaults, so blob, wasp, and skeleton only differ in sprites.
+- Mob spawn odds come from `randf_range(0, num_mobs + 1)`: roughly 25% blob, 25% wasp, and 50% skeleton.
+- The player's `AnimationTree` logs "aborts the transition by detecting one or more looped transitions" at runtime.
+- Stats node names use hyphens (`hp-up`, ...). Rename them to PascalCase when the stats UI is reworked.

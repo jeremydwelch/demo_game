@@ -888,18 +888,9 @@ unique_name_in_owner = true
 [node name="Stats" parent="." instance=ExtResource("13_4mj42")]
 visible = false
 
-[node name="Close" type="Button" parent="Stats"]
-offset_left = 33.3218
-offset_top = 33.0446
-offset_right = 83.3218
-offset_bottom = 64.0446
-scale = Vector2(0.123097, 0.201999)
-text = "Close"
-
 [connection signal="crystal_collected" from="main_player" to="." method="_on_crystal_collected"]
 [connection signal="player_death" from="main_player" to="." method="_on_main_player_player_death"]
 [connection signal="player_health_update" from="main_player" to="." method="_on_update_player_health"]
 [connection signal="player_level_up" from="main_player" to="." method="player_level_up"]
 [connection signal="finished" from="Music" to="." method="_on_music_finished"]
 [connection signal="new_stats" from="Stats" to="." method="new_player_stats"]
-[connection signal="toggle_pause" from="Stats" to="." method="toggle_paused"]
