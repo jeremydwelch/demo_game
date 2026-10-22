@@ -17,7 +17,7 @@ Solo project by Jeremy. Agents work on tasks he assigns and deliver them as PRs 
 
 ## Tech
 
-- **Godot 4.7, GDScript only.** The `MyFirstGame.csproj` / `.sln` files are leftover C# scaffolding. Don't add C#.
+- **Godot 4.7, GDScript only.** Don't add C#.
 - Renderer: GL Compatibility. Default texture filter: nearest (pixel art). 2D gravity is 0 (top-down).
 - Main scene: `res://src/levels/game_manager.tscn`.
 - Input actions: `up` / `down` / `left` / `right` (WASD + arrows), `use` (LMB / Space = swing), `pause` (Esc / joypad 6).
@@ -33,7 +33,6 @@ src/
   ui/       title_screen, world_transition, hud, stats (level-up/pause), game_over
 assets/     sprites, tilesets, HUD theme, music, sfx (many sfx not wired up yet)
 addons/     godot-git-plugin, godot_mcp_toolkit
-tutorial/   unrelated Godot demo project. Ignore it; slated for deletion.
 ```
 
 ## How the game currently works
@@ -96,4 +95,3 @@ There are likely more bugs than are listed here. Fix them when they're in scope,
 - `Mob.take_damage`'s `damage` parameter shadows the member. A mob hit again while it awaits its death timer can emit `enemy_death` more than once.
 - Health is a `float` in some places and an `int` in others (`get_current_health() -> int`).
 - Commented-out gate/world-advance code in `level.gd`. `gate.tscn` is unused.
-- `tutorial/` and the C# project files should be removed.
