@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://wwvqb5piqjkf"]
 
-[ext_resource type="Script" path="res://src/actors/skeleton_mob.gd" id="1_biqqu"]
+[ext_resource type="Script" uid="uid://b4mtk5u7pt2bs" path="res://src/actors/skeleton_mob.gd" id="1_biqqu"]
 [ext_resource type="Texture2D" uid="uid://vsf4o3qd2m8e" path="res://assets/mobs/skeleton/skeleton_hit.png" id="2_4f1a6"]
 [ext_resource type="Texture2D" uid="uid://ddd58g7mon4we" path="res://assets/mobs/skeleton/skeleton_idle.png" id="2_yn037"]
 [ext_resource type="Texture2D" uid="uid://4wh0pi1nbj12" path="res://assets/mobs/skeleton/skeleton_run.png" id="4_8jn7t"]
@@ -409,13 +409,13 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hbe04"]
 _data = {
-"RESET": SubResource("Animation_bcniy"),
-"hit-left": SubResource("Animation_2qhxy"),
-"hit-right": SubResource("Animation_7yp5w"),
-"idle-left": SubResource("Animation_ni5d2"),
-"idle-right": SubResource("Animation_dxeys"),
-"run-left": SubResource("Animation_fc6l7"),
-"run-right": SubResource("Animation_77633")
+&"RESET": SubResource("Animation_bcniy"),
+&"hit-left": SubResource("Animation_2qhxy"),
+&"hit-right": SubResource("Animation_7yp5w"),
+&"idle-left": SubResource("Animation_ni5d2"),
+&"idle-right": SubResource("Animation_dxeys"),
+&"run-left": SubResource("Animation_fc6l7"),
+&"run-right": SubResource("Animation_77633")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fwjn4"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=31 format=3 uid="uid://fxqhc1ushcpm"]
 
-[ext_resource type="Script" path="res://src/actors/blob_mob.gd" id="1_4y4i8"]
+[ext_resource type="Script" uid="uid://bpskvc526r3cu" path="res://src/actors/blob_mob.gd" id="1_4y4i8"]
 [ext_resource type="Texture2D" uid="uid://cq8kp51fievkl" path="res://assets/mobs/wasp/wasp_run.png" id="2_yv7a3"]
 [ext_resource type="Texture2D" uid="uid://dx6fo35x16cym" path="res://assets/mobs/blob/blob_hit.png" id="3_2ikol"]
 [ext_resource type="Texture2D" uid="uid://bnlc1huqq8acd" path="res://assets/mobs/blob/blob_walk.png" id="4_vf30p"]
@@ -421,13 +421,13 @@ tracks/4/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hbe04"]
 _data = {
-"RESET": SubResource("Animation_bcniy"),
-"hit-left": SubResource("Animation_2qhxy"),
-"hit-right": SubResource("Animation_7yp5w"),
-"idle-left": SubResource("Animation_ni5d2"),
-"idle-right": SubResource("Animation_dxeys"),
-"run-left": SubResource("Animation_fc6l7"),
-"run-right": SubResource("Animation_77633")
+&"RESET": SubResource("Animation_bcniy"),
+&"hit-left": SubResource("Animation_2qhxy"),
+&"hit-right": SubResource("Animation_7yp5w"),
+&"idle-left": SubResource("Animation_ni5d2"),
+&"idle-right": SubResource("Animation_dxeys"),
+&"run-left": SubResource("Animation_fc6l7"),
+&"run-right": SubResource("Animation_77633")
 }
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fwjn4"]

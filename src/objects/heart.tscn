@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://c588t5k733udm"]
 
-[ext_resource type="Script" path="res://src/objects/heart.gd" id="1_0p1fx"]
+[ext_resource type="Script" uid="uid://b8spspjprlwuv" path="res://src/objects/heart.gd" id="1_0p1fx"]
 [ext_resource type="Texture2D" uid="uid://bg444touofef5" path="res://assets/objects/misc/Heart.png" id="1_upv7v"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vgf0q"]
@@ -88,8 +88,8 @@ tracks/2/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_tq8x3"]
 _data = {
-"blinking": SubResource("Animation_fqg1q"),
-"idle": SubResource("Animation_80ow0")
+&"blinking": SubResource("Animation_fqg1q"),
+&"idle": SubResource("Animation_80ow0")
 }
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_c533c"]

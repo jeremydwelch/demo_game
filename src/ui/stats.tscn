@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c5mnhahtb7mhq"]
 
-[ext_resource type="Script" path="res://src/ui/stats.gd" id="1_grpw2"]
+[ext_resource type="Script" uid="uid://ilc2v2dsxday" path="res://src/ui/stats.gd" id="1_grpw2"]
 
 [node name="Stats" type="CanvasLayer"]
 process_mode = 3
